@@ -1,3 +1,5 @@
+name: mc-discord-prod
+
 services:
   discord-bot:
     build: .

@@ -1,3 +1,5 @@
+name: mc-discord-test
+
 services:
   discord-bot-test:
     build: .
