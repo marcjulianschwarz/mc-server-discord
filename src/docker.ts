@@ -18,6 +18,7 @@ export default async function monitorDockerLogs(
       stdout: true,
       stderr: true,
       timestamps: false,
+      since: Math.floor(Date.now() / 1000), // Only get logs from now onwards
     });
 
     console.log(`Log stream attached successfully`);
@@ -30,8 +31,9 @@ export default async function monitorDockerLogs(
 
       let logLine = payload.toString("utf8").trim();
 
-      // Remove any leading control characters (like 'K')
-      logLine = logLine.replace(/^[^\[]*/, "");
+      // Remove ANSI escape codes (like [93m for colors)
+      logLine = logLine.replace(/\x1b\[[0-9;]*m/g, ""); // Standard ANSI codes
+      logLine = logLine.replace(/\[[0-9;]*m/g, ""); // Already partially stripped codes
       if (!logLine) return;
       await handler(logLine);
     });
