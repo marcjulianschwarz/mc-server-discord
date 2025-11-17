@@ -1,0 +1,19 @@
+services:
+  discord-bot-test:
+    build: .
+    container_name: discord-bot-test
+    restart: unless-stopped
+    env_file:
+      - .env.test
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3001:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - bot-network-test
+
+networks:
+  bot-network-test:
+    driver: bridge
